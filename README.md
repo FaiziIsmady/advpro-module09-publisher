@@ -9,3 +9,25 @@ The URL amqp://guest:guest@localhost:5672 indicates that both the publisher and 
 ### Running RabbitMQ as message broker
 
 ![Image](https://github.com/user-attachments/assets/38e2220a-6ab2-47a8-a492-83ae1acff2cd)
+
+### Sending and processing event
+
+### Publisher console
+
+![Image](https://github.com/user-attachments/assets/8ff6e7cf-bbe0-4165-8459-1a17e955f739)
+
+### Subscriber console
+
+![Image](https://github.com/user-attachments/assets/02a19906-cfe8-4c92-9e0c-e39b9f881c48)
+
+Description:<br>
+## Testing the Publisher and Subscriber using RabbitMQ
+
+After installing Docker Desktop and running RabbitMQ with the provided Docker command, I tested the publisher–subscriber system built using Rust and the `crosstown_bus` crate.
+
+I opened two terminals: one for the subscriber and one for the publisher. I first ran the subscriber using `cargo run`, which connected to the RabbitMQ broker successfully. This was confirmed by checking the RabbitMQ management UI at `http://localhost:15672`, where one active connection appeared.
+
+Next, I ran the publisher using `cargo run` in the publisher directory. The publisher sent five `UserCreatedEventMessage` events, each containing a user ID and a name that includes my NPM. These messages were received and printed out by the subscriber in real time, showing that the message queue and delivery system worked correctly.
+
+Each time the publisher is run, new events are sent to the message broker and immediately consumed by the subscriber. This confirms that the AMQP connection, message serialization (using Borsh), and queue system are functioning as expected.
+
