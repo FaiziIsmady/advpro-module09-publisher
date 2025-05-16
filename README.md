@@ -21,7 +21,6 @@ The URL amqp://guest:guest@localhost:5672 indicates that both the publisher and 
 ![Image](https://github.com/user-attachments/assets/02a19906-cfe8-4c92-9e0c-e39b9f881c48)
 
 Description:<br>
-## Testing the Publisher and Subscriber using RabbitMQ
 
 After installing Docker Desktop and running RabbitMQ with the provided Docker command, I tested the publisher–subscriber system built using Rust and the `crosstown_bus` crate.
 
@@ -30,4 +29,17 @@ I opened two terminals: one for the subscriber and one for the publisher. I firs
 Next, I ran the publisher using `cargo run` in the publisher directory. The publisher sent five `UserCreatedEventMessage` events, each containing a user ID and a name that includes my NPM. These messages were received and printed out by the subscriber in real time, showing that the message queue and delivery system worked correctly.
 
 Each time the publisher is run, new events are sent to the message broker and immediately consumed by the subscriber. This confirms that the AMQP connection, message serialization (using Borsh), and queue system are functioning as expected.
+
+### Monitoring chart based on publisher
+
+![Image](https://github.com/user-attachments/assets/324b9922-cfd3-4014-9934-201b69fac919)
+
+Description:<br>
+
+
+When the publisher is executed using `cargo run`, it sends five `UserCreatedEventMessage` events to the RabbitMQ message broker. Each event is published to the `user_created` queue, which is being listened to by the subscriber.
+
+If we observe the RabbitMQ Management UI at `http://localhost:15672`, we can see the **"Message rates"** chart showing a spike every time the publisher runs. This spike represents the burst of messages being published and delivered in a very short time. Since all five messages are sent almost instantly, the spike is sharp but short-lived.
+
+These spikes are a visual confirmation that the publisher is actively sending messages to the broker, and that the broker is delivering them to the subscriber efficiently. Re-running the publisher will produce additional spikes on the chart, depending on the message rate and delivery confirmation.
 
